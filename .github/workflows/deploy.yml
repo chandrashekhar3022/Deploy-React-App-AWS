@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Debug - List files
-        run: ls -la
+        run: ls -la  # This should show the "build" folder
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -36,4 +36,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: "build"  # Make sure this is correct
+          SOURCE_DIR: "build"  # This should match the React build folder

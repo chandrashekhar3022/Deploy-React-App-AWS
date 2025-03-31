@@ -3,7 +3,7 @@ name: Deploy React to S3
 on:
   push:
     branches:
-      - main  # Change if your main branch is named differently
+      - main
 
 jobs:
   deploy:
@@ -24,6 +24,9 @@ jobs:
       - name: Build React App
         run: npm run build
 
+      - name: Debug - List files
+        run: ls -la
+
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -33,5 +36,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: "build" # React output folder
-
+          SOURCE_DIR: "build"  # Make sure this is correct

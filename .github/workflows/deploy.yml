@@ -1,39 +1,36 @@
-name: Deploy React to S3
+name: Upload Website
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build React App
+      - name: Build app
         run: npm run build
 
-      - name: Debug - List files
-        run: ls -la  # This should show the "build" folder
-
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.5.1
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
-          args: --delete
+          args: --acl public-read
         env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
+          SOURCE_DIR: build/
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: "build"  # This should match the React build folder

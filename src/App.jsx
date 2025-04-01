@@ -12,7 +12,7 @@ function App() {
       <button onClick={() => setCount(count - 1)} disabled={count <= 0}>
         Count-
       </button>
-      <button onClick={() => setCount(0)} disabled={count = 0}> Reset </button>
+      <button onClick={() => setCount(0)} disabled={count == 0}> Reset </button>
     </div>
   );
 }
